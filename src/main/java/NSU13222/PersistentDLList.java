@@ -13,6 +13,9 @@ public class PersistentDLList {
     public int version;
     private int ar_size = 512;
 
+    /**
+     * <p>Constructor of list. Creates empty persistent list.</p>
+     */
     public PersistentDLList() {
         first  = new Node[ar_size];
         last = new Node[ar_size];
@@ -21,7 +24,11 @@ public class PersistentDLList {
         N[0] = 0;
     }
 
-    public PersistentDLList (ArrayList <Object> lst) {
+    /**
+     * <p>Constructor of persistent list. Creates new list which contains elements from given list.</p>
+     * @param lst List which contains data.
+     */
+    public PersistentDLList (List lst) {
         first  = new Node[ar_size];
         last = new Node[ar_size];
         version = 1;
@@ -46,7 +53,7 @@ public class PersistentDLList {
         N[version] = N[version] + 1;
     }
 
-    public PersistentDLList(Node[] first, Node[] last, int version, int[] N) {
+    private PersistentDLList(Node[] first, Node[] last, int version, int[] N) {
         this.first  = first;
         this.last = last;
         this.version = version;
@@ -68,6 +75,11 @@ public class PersistentDLList {
         }
     }
 
+    /**
+     * <p>Compares two persistent lists.</p>
+     * @param lst List to compare.
+     * @return True if lists are equal.
+     */
     public boolean equals(PersistentDLList lst) {
         if (lst.size() != this.size())
             return false;
@@ -81,18 +93,35 @@ public class PersistentDLList {
         return res;
     }
 
+    /**
+     * <p>Checks if list is empty.</p>
+     * @return True if list is empty.
+     */
     public boolean isEmpty() {
         return N[version] == 0;
     }
 
+    /**
+     * <p>Returns size of current list.</p>
+     * @return size of list.
+     */
     public int size() {
         return N[version];
     }
 
+    /**
+     * <p>Getter for current version of list.</p>
+     * @return Version of list.
+     */
     public int version() {
         return version;
     }
 
+    /**
+     * <p>Puts given item into the end of the list. Doesn't change base list and returns a new one.</p>
+     * @param item Item which needed to place.
+     * @return New persistent list with added value.
+     */
     public PersistentDLList addLast(Object item) {
         if(N[version] == 0) {
             last[version + 1] = new Node(item, null, null, version + 1);
@@ -107,6 +136,12 @@ public class PersistentDLList {
         return new PersistentDLList(first, last, version + 1, N);
     }
 
+    /**
+     * <p>Puts given item into the given place of the list. Doesn't change base list and returns a new one.</p>
+     * @param index Place where value will be stored.
+     * @param item Object to store.
+     * @return New persistent list with stored value.
+     */
     public PersistentDLList add(int index, Object item) {
         if(N[version] == 0 || index > (N[version] - 1)) {
             return addLast(item);
@@ -142,6 +177,10 @@ public class PersistentDLList {
         return 0;
     }
 
+    /**
+     * <p>Removes last value from list. Doesn't change base list and creates new one with removed value.</p>
+     * @return New persistent list with removed vlaue.
+     */
     public PersistentDLList removeLast() {
         if (N[version] == 0) {
             return new PersistentDLList(first, last, version, N);
@@ -161,6 +200,11 @@ public class PersistentDLList {
         }
     }
 
+    /**
+     * <p>Removes value from list on the given position. Doesn't change base list and creates new one with removed value.</p>
+     * @param index Place from which value will be removed.
+     * @return New persistent list with removed value.
+     */
     public PersistentDLList remove(int index) {
         if (index > N[version] - 1) {
             return new PersistentDLList(first, last, version, N);

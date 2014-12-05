@@ -12,17 +12,24 @@ public class PersistentHashMap {
 
     final private static PersistentHashMap EMPTY = new PersistentHashMap(0, new EmptyNode());
 
-    PersistentHashMap(int count, INode root) {
+    private PersistentHashMap(int count, INode root) {
         this.count = count;
         this.root = root;
     }
 
+    /**
+     * <p>Constructor of persistent hash map. Creates empty structure.</p>
+     */
     public PersistentHashMap ()
     {
         this.count = 0;
         this.root = new EmptyNode();
     }
 
+    /**
+     * <p>Constucto of persistent hash map. Using data from Map to fill new persistent map.</p>
+     * @param data Map of data.
+     */
     public PersistentHashMap (Map <?, ?> data)
     {
         this.count = data.size();
@@ -39,6 +46,12 @@ public class PersistentHashMap {
         }
     }
 
+    /**
+     * <p>Method which adds new pair key/value into hash map. Doesn't change base hash map and creates new one with added value.</p>
+     * @param key Key on which new value will be stored.
+     * @param val New value.
+     * @return New hashmap with added element.
+     */
     public PersistentHashMap insert(Object key, Object val) {
         INode newroot = root.insert(0, Utils.hash(key), key, val);
         if(newroot == root)
@@ -46,6 +59,11 @@ public class PersistentHashMap {
         return new PersistentHashMap(count + 1, newroot);
     }
 
+    /**
+     * <p>Removes from hashmap pair key/value which stored with given key. Doesn't change base hash map and creates new one with added value.</p>
+     * @param key Key where pair stored.
+     * @return New hash map with removed value.
+     */
     public PersistentHashMap remove(Object key) {
         INode newroot = root.remove(Utils.hash(key), key);
         if(newroot == root)
@@ -57,10 +75,20 @@ public class PersistentHashMap {
         return new PersistentHashMap(count - 1, newroot);
     }
 
+    /**
+     * <p>Checks if hash map contains given key.</p>
+     * @param key Key to search.
+     * @return True if hash map contains given key.
+     */
     public boolean containsKey(Object key) {
         return valueAt(key) != null;
     }
 
+    /**
+     * <p>Returns object stored on key position. If there's no such key, returns null.</p>
+     * @param key Key on which object is stored.
+     * @return Object stored on given key.
+     */
     public Object valueAt(Object key) {
         LeafNode node = root.find(Utils.hash(key), key);
         if(node != null)

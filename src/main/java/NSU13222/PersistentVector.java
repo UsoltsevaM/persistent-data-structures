@@ -19,24 +19,42 @@ public class PersistentVector {
         this.tail = tail;
     }
 
-
+    /**
+     * <p>Constructor of persistent vector. Takes list of objects separated by comma</p>
+     * @param data Variable amount of arguments.
+     */
     public PersistentVector(Object... data) {
         for (Object item : data) {
             this.internalAdd(item);
         }
     }
 
+    /**
+     * <p>Constructor of persistent vector. Takes list List<Object>.</p>
+     * @param data List<object>
+     */
     public PersistentVector(List data) {
         for (Object item : data) {
             this.internalAdd(item);
         }
     }
 
+    /**
+     * <p>Method gets object on the particular place.</p>
+     * @param index position in vector.
+     * @return Object stored on position.
+     */
     public Object valueAt(int index) {
         Object[] node = nodeFor(index);
         return node[index & 0x01f];
     }
 
+    /**
+     * <p>Adds value into vector. It places value on last place and set it index to size() + 1.
+     * It doesn't change base vector and returns new copy of vector.</p>
+     * @param value Object to store.
+     * @return new copy of vector with added value.
+     */
     public PersistentVector add(Object value) {
         if (tail.length < 32) {
             Object[] newTail = new Object[tail.length + 1];
@@ -54,6 +72,13 @@ public class PersistentVector {
         return new PersistentVector(count + 1, newshift, newroot, new Object[]{value});
     }
 
+    /**
+     * <p>Sets element on given position to given value. It doesn't change base vector and returns new copy of vector.
+on     * If index == size(), increases length of return vector to 1.</p>
+     * @param index Position where new value places
+     * @param value Object to set in vector.
+     * @return New copy of vector with new value on given position.
+     */
     public PersistentVector set(int index, Object value) {
         if (index >= 0 && index < count) {
             if (index >= tailoff()) {
@@ -71,15 +96,27 @@ public class PersistentVector {
         throw new IndexOutOfBoundsException();
     }
 
+    /**
+     * <p>Returns size of vector.</p>
+     * @return Size of vector.
+     */
     public int size() {
         return count;
     }
 
+    /**
+     * <p>Simple constructor which returns empty vector.</p>
+     * @return New vector.
+     */
     public PersistentVector empty()
     {
         return EMPTY;
     }
 
+    /**
+     * <p>Removed last element in vector and returns vector with size--. Doesn't change base vector and returns new copy.</p>
+     * @return New vector without last element.
+     */
     public PersistentVector pop(){
         if(count == 0)
             throw new IllegalStateException("Can't pop empty vector");
