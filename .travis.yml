@@ -1,0 +1,14 @@
+language: java
+
+install: mvn install -DskipTests=true
+
+script: mvn test
+
+jdk:
+  - oraclejdk7
+  - oraclejdk8
+
+## I will need to set something up to catch these. 
+notifications:
+  email:
+    - knyazev.igor.nsk@gmail.com
