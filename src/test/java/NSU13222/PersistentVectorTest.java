@@ -121,6 +121,28 @@ public class PersistentVectorTest extends TestCase {
     }
 
     public void testPop() throws Exception {
+        PersistentVector vector1 = new PersistentVector("abc", "xyz");
 
+        assert (vector1.size() == 2);
+        assert (vector1.valueAt(0) == "abc");
+        assert (vector1.valueAt(1) == "xyz");
+
+        PersistentVector vector2 = vector1.pop();
+
+        assert (vector2.size() == 1);
+        assert (vector2.valueAt(0) == "abc");
+    }
+
+    public void testBigVector() throws Exception {
+        List<Integer> data = new ArrayList<Integer>();
+
+        for(int i = 0; i < Math.pow(2, 16); i++) {
+            data.add(i);
+        }
+
+        PersistentVector vector1 = new PersistentVector(data);
+
+        assert (vector1.size() == Math.pow(2, 16));
+        assert ((Integer) vector1.valueAt( (int)Math.pow(2, 16) - 1 ) == (int)Math.pow(2, 16) - 1 );
     }
 }
